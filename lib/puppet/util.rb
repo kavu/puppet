@@ -216,6 +216,7 @@ module Util
 
   # Execute the provided command in a pipe, yielding the pipe object.
   def execpipe(command, failonfail = true)
+    command = command.join
     if respond_to? :debug
       debug "Executing '#{command}'"
     else

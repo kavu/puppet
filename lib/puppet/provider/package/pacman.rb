@@ -29,15 +29,13 @@ Puppet::Type.type(:package).provide :pacman, :parent => Puppet::Provider::Packag
     begin
       execpipe(listcmd()) do |process|
         # pacman -Q output is 'packagename version-rel'
-        regex = %r{^(\S+)\s(\S+)}
+        regex = /^(\S+)\s(\S+)/
         fields = [:name, :ensure]
         hash = {}
 
-        process.each_line { |line|
+        process.each_line do |line|
           if match = regex.match(line)
-            fields.zip(match.captures) { |field,value|
-              hash[field] = value
-            }
+            fields.zip(match.captures) { |field, value| hash[field] = value }
 
             name = hash[:name]
             hash[:provider] = self.name
@@ -47,7 +45,7 @@ Puppet::Type.type(:package).provide :pacman, :parent => Puppet::Provider::Packag
           else
             warning("Failed to match line %s" % line)
           end
-        }
+        end
       end
     rescue Puppet::ExecutionFailure
       return nil
@@ -81,7 +79,7 @@ Puppet::Type.type(:package).provide :pacman, :parent => Puppet::Provider::Packag
         :ensure => :purged,
         :status => 'missing',
         :name => @resource[:name],
-        :error => 'ok',
+        :error => 'ok'
       }
     end
     nil

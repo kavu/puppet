@@ -75,7 +75,7 @@ describe provider do
         with { |args|
           args[0] == "/usr/bin/pacman"
         }.
-        returns ""
+        returns("")
 
       @provider.uninstall
     end
